@@ -1,6 +1,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from myapp import SpotipyClient
+from pythonfy.client import SpotipyClient
 from dotenv import load_dotenv
 import os
 
@@ -22,31 +22,35 @@ def build():
 
     cbjr_id = sp.get_artist_id("Charlie Brown Jr")
 
-    calvin_harris = sp.get_artist_id("Calvin Harris")
+    # calvin_harris = sp.get_artist_id("Calvin Harris")
 
-    top_cbjr = sp.get_top_tracks_by_artist(cbjr_id)
-    top_calvin_harris = sp.get_top_tracks_by_artist(calvin_harris)
+    # top_cbjr = sp.get_top_tracks_by_artist(cbjr_id)
+    # top_calvin_harris = sp.get_top_tracks_by_artist(calvin_harris)
 
-    top_cbjr.extend(top_calvin_harris)
+    # top_cbjr.extend(top_calvin_harris)
 
 
-    playlist_today = sp.create_dinamic_playlist(
-        "CBJR e Calvin Harris",
-        top_cbjr,
-        public=True,
-        ordem_aleatoria=True
+    # playlist_today = sp.create_dinamic_playlist(
+    #     "CBJR e Calvin Harris",
+    #     top_cbjr,
+    #     public=True,
+    #     ordem_aleatoria=True
+    # )
+
+    # sp.start_playback(
+    #     context_uri=sp.get_context_uri("playlist", playlist_today)
+    # )
+
+    recomend = sp.recommendations(
     )
-
-    sp.start_playback(
-        context_uri=sp.get_context_uri("playlist", playlist_today)
-    )
+    print(recomend)
 
 if __name__ == '__main__':
-    build()
+    build() 
 
 # search = sp.search(
 #     "lose yourself",
-#     limit=1,
+#     limit=1,6
 # )
 
 # sp.create_dinamic_playlist_by_name(

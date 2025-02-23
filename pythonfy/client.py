@@ -1,6 +1,6 @@
 import requests
-from dominio.spotify import Spotipy
-from dominio.spotify import ScopeKeys
+from dominio.spotipy import Spotipy
+from dominio.spotipy import ScopeKeys
 from typing import Optional, Dict, Any, List
 from dominio.spotify_user import SpotifyUser
 from dominio.context_uri import Context_uris
@@ -8,6 +8,8 @@ import base64
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import random
+from dominio.playback import Playback
+ 
 class SpotipyClient(Spotipy, spotipy.Spotify):
     """
     A spotify client to modify spotify params, like playback, playlists, etc
@@ -39,6 +41,9 @@ class SpotipyClient(Spotipy, spotipy.Spotify):
         )
         return me
     
+
+    def create_playback(self, playback: Playback, list_tracks: List[str]) -> None:
+        return playback.create_playback(spotify_client=self, list_tracks=list_tracks)
 
     def dinamic_queue_by_genre(self, genre: str) -> str:
         pass
