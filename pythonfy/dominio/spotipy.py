@@ -1,5 +1,9 @@
-from typing import List, Literal, Optional, Dict, Any, Protocol
+from typing import List, Literal, Optional, Dict, Any
 import requests
+from dominio.playlist_playback import PlaylistPlayback
+from dominio.queue_playback import QueuePlayback
+from dominio.playback_interface import PlaybackAbstract
+from dominio.search_types import ArtistSearch, TrackSearch, SearchTypeAbstract
 
 ScopeKeys = Literal[
     "modificar_playlist_publica",
@@ -21,6 +25,7 @@ ScopeKeys = Literal[
     "recomendations",
     "modificar_recomendations"
 ]
+
 
 
 class Spotipy:
@@ -53,7 +58,21 @@ class Spotipy:
     "modificar_recomendations": "user-follow-modify"
 }
     
+    ##__search_type_names: List[str] = ['artist', 'album', 'track', 'playlist', 'show', 'episode']
 
+    __search_types: Dict[str, SearchTypeAbstract] = {
+            'artist': ArtistSearch,
+            'album': 'AlbumSearch', #substituir dps
+            'track': TrackSearch,
+            'playlist': 'PlaylistSearch',
+            'show': 'ShowSearch',
+            'episode': 'EpisodeSearch'
+        }
+
+    __playbacks: Dict[str, PlaybackAbstract] = {
+    '1': PlaylistPlayback,
+    '2': QueuePlayback
+    }
     
     def make_request(
         self,
@@ -114,7 +133,22 @@ class Spotipy:
         except Exception as e:
             print(f"Erro: {e}")
             return None
-        
+    
+    @classmethod
+    def get_all_search_types(cls) -> List[Dict[str, SearchTypeAbstract]]:
+        return cls.__search_types
 
+    @classmethod
+    def get_search_type(cls, search_type: str) -> SearchTypeAbstract:
+        return cls.__search_types[search_type]
+     
 
+    @classmethod
+    def get_search_type_names(cls) -> List[str]:
+        return list(cls.__search_types.keys())
+
+    @classmethod
+    def get_playbacks(cls) -> Dict[str, PlaybackAbstract]:
+        return cls.__playbacks
+    
 
