@@ -2,7 +2,6 @@ from .playback_interface import PlaybackAbstract
 from typing import List, TYPE_CHECKING
 import random
 
-
 if TYPE_CHECKING:    
     from client import SpotipyClient
 

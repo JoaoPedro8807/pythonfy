@@ -1,5 +1,5 @@
 import requests
-from dominio.spotipy import Spotipy
+from dominio.spotipy import Pythonfy
 from dominio.spotipy import ScopeKeys
 from typing import Optional, Dict, Any, List
 from dominio.spotify_user import SpotifyUser
@@ -13,7 +13,7 @@ from dominio.search_types import Search
 import pprint
 
  
-class SpotipyClient(Spotipy, spotipy.Spotify):
+class SpotipyClient(Pythonfy, spotipy.Spotify):
     """
     A spotify client to modify spotify params, like playback, playlists, etc
 
@@ -31,7 +31,7 @@ class SpotipyClient(Spotipy, spotipy.Spotify):
     __playback: Playback
 
     def __init__(self, scopes: List[ScopeKeys] , client_id: str = None, client_secret: str = None, redirect_uri: str = None): # type: ignore
-        self.__scops = " ".join(Spotipy.spotify_scopes[scope] for scope in scopes)  
+        self.__scops = " ".join(Pythonfy.spotify_scopes[scope] for scope in scopes)  
         self.auth = SpotifyOAuth(client_id, client_secret, redirect_uri, scope=self.__scops)
         super().__init__(auth_manager=self.auth)
         self.me() # get user infos by default at init
@@ -67,9 +67,6 @@ class SpotipyClient(Spotipy, spotipy.Spotify):
 
     def get_track_id(self, track_name: str) -> str:
         q = super().search(q=track_name, type='track', limit=1, offset=0)
-        print("response de ", track_name)
-        pprint.pprint(q.get("tracks").get("items")[0])
-
         return q.get("tracks").get("items")[0].get("id", "undefined")
 
     def create_dinamic_playlist_by_name(self, playlist_name: str, tracks_names: List[str],  public: bool = True, ordem_aleatoria: bool = False) -> str:
@@ -101,6 +98,14 @@ class SpotipyClient(Spotipy, spotipy.Spotify):
         self.__search_type = search_type
         return search_type.search(spotify_client=self, search_list=search_list)
 
+
+    @property
+    def playback(self) -> Playback: 
+        return self.__playback
+    
+    @playback.setter
+    def playback(self, playback: Playback):
+        self.__playback = playback
 
     @property
     def search_type(self) -> Search:

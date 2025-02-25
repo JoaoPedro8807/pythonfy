@@ -28,7 +28,7 @@ ScopeKeys = Literal[
 
 
 
-class Spotipy:
+class Pythonfy:
     """
         Represents my Spotify API
     """
